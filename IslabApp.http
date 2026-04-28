@@ -1,0 +1,6 @@
+@IslabApp_HostAddress = http://localhost:5103
+
+GET {{IslabApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
