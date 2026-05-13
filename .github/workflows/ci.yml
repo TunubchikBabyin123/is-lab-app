@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,11 +21,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert owner to lowercase
+        run: echo "OWNER_LC=${OWNER,,}" >> $GITHUB_ENV
+        env:
+          OWNER: ${{ github.repository_owner }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/is-lab-app:latest
-            ghcr.io/${{ github.repository_owner }}/is-lab-app:${{ github.sha }}
+            ghcr.io/${{ env.OWNER_LC }}/is-lab-app:latest
+            ghcr.io/${{ env.OWNER_LC }}/is-lab-app:${{ github.sha }}
